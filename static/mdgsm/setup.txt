@@ -1,0 +1,9 @@
+plugin.tx_mocdyngoosm_pi1.pageTable = tt_news
+plugin.tx_mocdyngoosm_pi1.storagePid = 46
+plugin.tx_mocdyngoosm_pi1.singlePid = 49
+plugin.tx_mocdyngoosm_pi1.piVar_identifier = 
+plugin.tx_mocdyngoosm_pi1.priority = 0.8
+plugin.tx_mocdyngoosm_pi1.lastmodField = tstamp
+plugin.tx_mocdyngoosm_pi1.additionalWhere =
+plugin.tx_mocdyngoosm_pi1.is_index = 0
+plugin.tx_mocdyngoosm_pi1.siteMaps =

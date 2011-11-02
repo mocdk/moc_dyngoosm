@@ -1,0 +1,20 @@
+<!--
+    Document   : mdgsm.xml
+    Created on : 13. maj 2009, 08:44
+    Author     : mikkel@mocsystems.com
+    Description:
+        Template for MOC Dynamic Google Sitemap
+-->
+<!-- ###SITEMAP### - begin ### -->
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.google.com/schemas/sitemap/0.84">
+	<!-- ###PAGE### - begin -->
+	<url>
+		<loc>###loc###</loc>
+		<lastmod>###lastmod###</lastmod>
+		<changefreq>###changefreq###</changefreq>
+		<priority>###priority###</priority>
+	</url>
+	<!-- ###PAGE### - end -->
+</urlset>
+<!-- ###SITEMAP### - end -->

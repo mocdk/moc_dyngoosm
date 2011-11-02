@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;tx_mocdyngoosm_pi1&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="pi_flexform.sheettitle">Display</label>
+			<label index="pi_flexform.sheetTable">Dynamic pages settings</label>
+			<label index="pi_flexform.sheetIndex">Sitemap index settings</label>
+			<label index="pi_flexform.display_type">Display type:</label>
+			<label index="pi_flexform.indexsheet">Index settings</label>
+			<label index="pi_flexform.customsheet">Custom records settings</label>
+			<label index="pi_flexform.link_to_sitemaps">Sitemap links (for display type Sitemap Index):</label>
+			<label index="pi_flexform.storage_pid">Storage folder:</label>
+			<label index="pi_flexform.pid_singleview">Single view page:</label>
+			<label index="pi_flexform.table_of_records">Table where the records are stored</label>
+			<label index="pi_flexform.last_modified_field">Field for last modified(default is tstamp)</label>
+			<label index="pi_flexform.additional_where">Additional where-clause</label>
+			<label index="pi_flexform.piVar_identifier">PiVar identifier (default is tx_TABLENAME_pi1[uid]</label>
+			<label index="pi_flexform.priority">Priority</label>
+			<label index="pi_flexform.lastmodField">Last modified field in table(default is tstamp)</label>
+		</languageKey>
+	</data>
+</T3locallang>
