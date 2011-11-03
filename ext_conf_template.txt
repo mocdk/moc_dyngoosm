@@ -1,0 +1,10 @@
+# cat=Settings; type=string; label=Google analytics account number(leave blank not to use).
+GA_ACCOUNT = 12345678-X
+# cat=Settings; type=string; label=Google Analytics accounts/profiles for top level domains(seperated by semi colon (ex. dk=1122-1;de=1122-2 ) )
+GA_ACCOUNT_PROFILETLD=
+# cat=Settings; type=boolean; label=Add robots settings to page metadata.
+ROBOTS=1
+# cat=Settings; type=boolean; label=Add possibility to track click on links.
+GA_EVENT=1
+# cat=Settings; type=string; label=Please write your primary Google search phrases seperated by comma (e.g. TYPO3,CMS,content management)
+PRIMARY_SW=

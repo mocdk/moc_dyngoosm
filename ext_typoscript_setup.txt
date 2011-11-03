@@ -1,0 +1,91 @@
+[userFunc = user_robotsonpage]
+	page.headerData.673 = TEXT
+	page.headerData.673{
+		value = <meta name="ROBOTS" content="{page:tx_mocdyngoosm_robots}" />
+		insertData = 1
+	}
+[end]
+
+[userFunc = user_gaeventonpage]
+	page.jsInline{
+		673 = TEXT
+		673.value (
+			var classEventMap = {
+				'internalLinkTrack' : {'category':'internal-link','action':'click','opt_label':'###LINKTEXT###','opt_value':'1'},
+				'externalLinkTrack' : {'category':'external-link','action':'click','opt_label':'###LINKTEXT###','opt_value':'1'},
+				'internalFileTrack' : {'category':'internal-file','action':'click','opt_label':'###LINKTEXT###','opt_value':'1'}
+			};
+		)
+	}
+	page.includeJSFooter.gaeventclick = EXT:moc_dyngoosm/res/ga_event_onlink.js
+[end]
+
+/*
+[userFunc = user_googleanalytics]
+#nothing
+[end]
+*/
+/*
+gaAccount = {$ga.account.default}
+
+page.headerData.675 = HTML
+page.headerData.675.value (
+	<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '{gaAccount}']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+)
+
+gaAccount = {$ga.account.default}
+
+[globalString = IENV:HTTP_HOST = *.tst]
+gaAccount = {$ga.account.tst}
+[end]
+
+[globalString = IENV:HTTP_HOST = *.com]
+gaAccount = {$ga.account.com}
+[end]
+
+[globalString = IENV:HTTP_HOST = *.dk]
+gaAccount = {$ga.account.dk}
+[end]
+
+[globalString = IENV:HTTP_HOST = *.de]
+gaAccount = {$ga.account.de}
+[end]
+
+[globalString = IENV:HTTP_HOST = *.bg]
+gaAccount = {$ga.account.bg}
+[end]
+
+page.headerData.675 = HTML
+page.headerData.675.value (
+	<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', '
+)
+
+page.headerData.676 = HTML
+page.headerData.676.value < gaAccount
+
+page.headerData.677 = HTML
+page.headerData.677.value (
+']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+)
+*/

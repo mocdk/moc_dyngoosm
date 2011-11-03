@@ -7,6 +7,16 @@
 	<data type="array">
 		<languageKey index="default" type="array">
 			<label index="tt_content.list_type_pi1">MOC Dynamic Google Sitemap</label>
+			<label index="pages.tx_mocdyngoosm_robots.I.0">INDEX</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.1">FOLLOW</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.2">NOINDEX</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.3">NOFOLLOW</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.4">NOARCHIVE</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.5">NONE</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.6">NOSNIPPET</label>
+            <label index="pages.tx_mocdyngoosm_robots.I.7">NOODP</label>
+            <label index="pages.tx_mocdyngoosm_robots">Robots</label>
+
 		</languageKey>
 	</data>
 </T3locallang>

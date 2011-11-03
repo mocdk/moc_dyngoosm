@@ -1,0 +1,26 @@
+#mdgsm_beseo_wrap{float:left;position:relative;}
+#mdgsm_list{
+    background-color:#F0F0F0;
+    border:1px solid #EEEEEE;
+    list-style:decimal inside none;
+    margin:-2px 0 0 0;
+    padding:3px;
+    position:absolute;
+    visibility:hidden;
+    width:220px;
+    z-index:10;
+}
+#mdgsm_list li{
+    border-bottom:1px solid #DDDDDD;
+    padding:2px 8px;
+}
+#mdgsm_list li input{
+    width: 180px;
+    border: 0px solid #000;
+    background-color: #F0F0F0;
+    padding:2px;
+}
+
+#mdgsm_list li input:focus{
+    background-color: #333;
+}

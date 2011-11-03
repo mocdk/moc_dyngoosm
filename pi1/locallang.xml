@@ -21,6 +21,12 @@
 			<label index="pi_flexform.piVar_identifier">PiVar identifier (default is tx_TABLENAME_pi1[uid]</label>
 			<label index="pi_flexform.priority">Priority</label>
 			<label index="pi_flexform.lastmodField">Last modified field in table(default is tstamp)</label>
+			<label index="primary_search"><![CDATA[
+			    abe,hest,hund,gnu,pelikan,hare,kanin
+			]]></label>
+			<label index="secondary_search"><![CDATA[
+			    ulv,gris,frø,lemur,orangutang,æsel
+			]]></label>
 		</languageKey>
 	</data>
 </T3locallang>

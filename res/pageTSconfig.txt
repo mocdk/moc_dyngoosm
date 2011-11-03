@@ -1,0 +1,16 @@
+RTE.default.proc.allowedClasses := addToList(externalLinkTrack,internalLinkTrack,internalFileTrack)
+RTE.default.classesLinks := addToList(externalLinkTrack,internalLinkTrack,internalFileTrack)
+RTE.default.classesAnchor := addToList(externalLinkTrack,internalLinkTrack,internalFileTrack)
+
+RTE.classesAnchor.externalLinkTrack {
+	class = externalLinkTrack
+	type = url
+}
+RTE.classesAnchor.internalLinkTrack {
+	class = internalLinkTrack
+	type = page
+}
+RTE.classesAnchor.internalFileTrack{
+	class = internalFileTrack
+	type = file
+}

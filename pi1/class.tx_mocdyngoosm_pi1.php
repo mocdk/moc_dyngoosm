@@ -56,6 +56,9 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 
 		$this->pi_initPIflexForm();
+
+		$GLOBALS["TSFE"]->config["config"]["disableAllHeaderCode"] = 1;
+
 		$this->errorWrapper = '<html><head><title>Error in plugin: tx_mocdyngoosm</title></head><body><h3>An exception is thrown by tx_mocdyngoosm with the following message:</h3><p>###ERROR_MSG###</p></body></html>';
 		$this->is_index = (intval($this->pi_getFFvalue($this->cObj->data['pi_flexform'],'display_type','sDEF')) === 1) || (intval($this->conf['is_index'])===1);
 		try{
@@ -121,13 +124,27 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 
 	private function getPages(){
 		$pagearr = array();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$this->lastmodField,$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable),'',$this->lastmodField.' DESC');
+		$limit = $this->defineLimit();
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$this->lastmodField,$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable),'',$this->lastmodField.' DESC',$limit);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
 			$url = $this->pi_getPageLink($this->singlePid,'' ,array($this->piVar_identifier=>$row['uid']));
 			$pagearr[] = array('url'=>$url,'lastmod'=>$row['tstamp']);
 		}
 
 		return $pagearr;
+	}
+
+	private function defineLimit(){
+		if($this->parts > 1){
+			if($this->partial > 0){
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(uid) as cnt',$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable));
+				$rowcount = $row[0]['cnt'];
+				$chunk = ceil($rowcount/$this->parts);
+				$this->partial == 1?$offset = 0:$offset = ($this->partial-1)*$chunk;
+				return $offset.','.$chunk;
+			}
+		}
+		return '';
 	}
 
 	private function getLastModified($url){
@@ -176,6 +193,13 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 			$this->piVar_identifier = 'tx_'.$this->pageTable.'_pi1[uid]';
 		}
 		$this->additionalWhere = mysql_real_escape_string(trim($this->conf['additionalWhere']));
+
+		if(t3lib_div::_GET('parts') > 1){
+			if(t3lib_div::_GET('partial') > 0){
+				$this->parts = intval(t3lib_div::_GET('parts'));
+				$this->partial = intval(t3lib_div::_GET('partial'));
+			}
+		}
 	}
 }
 
