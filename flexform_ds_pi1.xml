@@ -102,6 +102,24 @@
 							</config>
 						</TCEforms>
 					</pivar_identifier>
+					<additionalWhere>
+						<TCEforms>
+							<label>LLL:EXT:moc_dyngoosm/pi1/locallang.xml:pi_flexform.additionalWhere</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+							</config>
+						</TCEforms>
+					</additionalWhere>
+					<additionalParams>
+						<TCEforms>
+							<label>LLL:EXT:moc_dyngoosm/pi1/locallang.xml:pi_flexform.additionalParams</label>
+							<config>
+								<type>input</type>
+								<size>50</size>
+							</config>
+						</TCEforms>
+					</additionalParams>
 				</el>
 			</ROOT>
 		</sTable>

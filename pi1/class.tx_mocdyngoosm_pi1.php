@@ -125,9 +125,17 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 	private function getPages(){
 		$pagearr = array();
 		$limit = $this->defineLimit();
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$this->lastmodField,$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable),'',$this->lastmodField.' DESC',$limit);
+		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$this->lastmodField,$this->pageTable,$this->where.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable),'',$this->lastmodField.' DESC',$limit);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-			$url = $this->pi_getPageLink($this->singlePid,'' ,array($this->piVar_identifier=>$row['uid']));
+		//	$url = $this->pi_getPageLink($this->singlePid,'' ,array($this->piVar_identifier=>$row['uid']));
+
+			$linkConf = array(
+				'parameter' => $this->singlePid,
+				'additionalParams' => '&'.$this->piVar_identifier.'='.$row['uid'].$this->additionalParams,
+			);
+			$url = $this->cObj->typoLink_URL($linkConf);
+
+
 			$pagearr[] = array('url'=>$url,'lastmod'=>$row['tstamp']);
 		}
 
@@ -176,7 +184,9 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 			'singlePid'=>'pid_singleview',
 			'priority'=>'priority',
 			'piVar_identifier' => 'pivar_identifier',
-			'lastmodField'=>'lastmod_field'
+			'lastmodField'=>'lastmod_field',
+			'additionalWhere' => 'additionalWhere',
+			'additionalParams' => 'additionalParams'
 
 		);
 		$intvals = array('storagePid','singlePid');
@@ -192,7 +202,19 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		if(strlen($this->piVar_identifier)==0){
 			$this->piVar_identifier = 'tx_'.$this->pageTable.'_pi1[uid]';
 		}
-		$this->additionalWhere = mysql_real_escape_string(trim($this->conf['additionalWhere']));
+		if(strlen(trim($this->storagePid))===0 && intval($this->storagePid) === 0){
+			$this->where = 'pid > -1';
+		}
+		elseif(strpos($this->storagePid,',')){
+			$storagePids = t3lib_div::intExplode(',',$this->storagePid, TRUE);
+			$this->where = 'pid IN ('.implode(',', $storagePids);
+		}
+		else{
+			$this->where = 'pid = '.$this->storagePid;
+		}
+
+		if(strlen(trim($this->additionalWhere)) > 0)
+			$this->additionalWhere = trim($this->additionalWhere);
 
 		if(t3lib_div::_GET('parts') > 1){
 			if(t3lib_div::_GET('partial') > 0){

@@ -27,6 +27,9 @@
 			<label index="secondary_search"><![CDATA[
 			    ulv,gris,frø,lemur,orangutang,æsel
 			]]></label>
+			<label index="pi_flexform.additionalWhere">Additional where clause (remember AND/OR)</label>
+			<label index="pi_flexform.additionalParams">Additional params (typolink)</label>
+
 		</languageKey>
 	</data>
 </T3locallang>
