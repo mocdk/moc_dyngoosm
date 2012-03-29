@@ -12,8 +12,6 @@
 
 		var methods = {
 			trackEvent : function(event){
-				//Remove this
-				//event.preventDefault();
 				element = $(this);
 				$.each(config.classEventMap, function(k,v){
 					if(element.hasClass(k)){
@@ -21,12 +19,8 @@
 						var optlabel = config.classEventMap[k]['opt_label'];
 						optlabel = optlabel.replace('###LINKTEXT###',linktext);
 						_gaq.push(['_trackEvent', config.classEventMap[k]['category'], config.classEventMap[k]['action'], optlabel,config.classEventMap[k]['opt_value']]);
-						//Remove this
-						//console.log(['_trackEvent', config.classEventMap[k]['category'], config.classEventMap[k]['action'], optlabel,config.classEventMap[k]['opt_value']]);
 					}
 				});
-				//remove this
-				//return false;
 			}
 		}
 
