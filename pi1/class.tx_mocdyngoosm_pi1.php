@@ -127,15 +127,11 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		$limit = $this->defineLimit();
 		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('uid,'.$this->lastmodField,$this->pageTable,$this->where.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable),'',$this->lastmodField.' DESC',$limit);
 		while($row = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res)){
-		//	$url = $this->pi_getPageLink($this->singlePid,'' ,array($this->piVar_identifier=>$row['uid']));
-
 			$linkConf = array(
 				'parameter' => $this->singlePid,
 				'additionalParams' => '&'.$this->piVar_identifier.'='.$row['uid'].$this->additionalParams,
 			);
 			$url = $this->cObj->typoLink_URL($linkConf);
-
-
 			$pagearr[] = array('url'=>$url,'lastmod'=>$row['tstamp']);
 		}
 
@@ -145,7 +141,9 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 	private function defineLimit(){
 		if($this->parts > 1){
 			if($this->partial > 0){
-				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('count(uid) as cnt',$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable));
+				$pidPart = $this->storagePid ? 'pid='.$this->storagePid : 'pid > -1';
+				//$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(uid) as cnt',$this->pageTable,'pid='.$this->storagePid.' '.$this->additionalWhere.' '.$this->cObj->enableFields($this->pageTable));
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows('COUNT(uid) as cnt',$this->pageTable, $pidPart.$this->additionalWhere.$this->cObj->enableFields($this->pageTable));
 				$rowcount = $row[0]['cnt'];
 				$chunk = ceil($rowcount/$this->parts);
 				$this->partial == 1?$offset = 0:$offset = ($this->partial-1)*$chunk;
@@ -155,7 +153,7 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		return '';
 	}
 
-	private function getLastModified($url){
+	private function getLastModified_OLD($url){
 		$lastmod = 0;
 		$xmlreader = new XMLReader();
 		if(!@$xmlreader->open($url)){
@@ -174,6 +172,68 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		}
 		$lastmod = date('c',$lastmod);
 		return $lastmod;
+	}
+
+	private function getLastModified($url){
+		$lastmod = 0;
+		$tablename = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'sitemaps_table','sIndex');
+		if (isset($tablename) && strlen(trim($tablename)) > 0) {
+			$ffLastMod = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'last_modified_field_all','sIndex');
+			$lastModField = (strlen(trim($ffLastMod)) > 0) ? $ffLastMod : 'tstamp';
+			$urlParts = parse_url($url);
+
+			$queryParts = t3lib_div::explodeUrl2Array($urlParts['query']);
+
+			if (count($queryParts) >= 2 && isset($queryParts['parts']) && isset($queryParts['partial'])) {
+				$this->parts = intval($queryParts['parts']);
+				$this->partial = intval($queryParts['partial']);
+				$this->pageTable = $tablename;
+				$this->lastmodField = $lastModField;
+				$additionalWhere = $this->pi_getFFvalue($this->cObj->data['pi_flexform'],'index_additional_where','sIndex');
+				if (strlen($additionalWhere) === 0) {
+					$additionalWhere = $this->conf['index_additional_where'];
+				}
+				$this->additionalWhere = $this->prepareAdditionalWhere($additionalWhere);
+				$limit = $this->defineLimit();
+				if (strlen($limit) === 0) {
+					return date('c', mktime()-(100*24*60*60)); //Can't determine limit - set lastmod to 100 days ago.
+				}
+				$row = $GLOBALS['TYPO3_DB']->exec_SELECTgetRows($this->lastmodField.' as lastmod',$this->pageTable,'1=1'.$this->additionalWhere.$this->cObj->enableFields($this->pageTable), '', $this->lastmodField . ' DESC', $limit);
+
+				return date('c', intval($row[0]['lastmod']));
+			}
+		}
+		$xmlreader = new XMLReader();
+		if(!@$xmlreader->open($url)){
+			throw new Exception('Could not open the sitemap defined: '.$url);
+		}
+		while($xmlreader->read()){
+			if($xmlreader->nodeType == XMLReader::ELEMENT){
+				if($xmlreader->name == 'lastmod'){
+					$xmlreader->read();
+					$tmp = strtotime($xmlreader->value);
+					if($tmp > $lastmod){
+						$lastmod = $tmp;
+					}
+				}
+			}
+		}
+		$lastmod = date('c',$lastmod);
+		return $lastmod;
+	}
+
+	private function prepareAdditionalWhere($wherePart) {
+		$wherePart = trim($wherePart);
+		if (strlen($wherePart) === 0) {
+			return '';
+		}
+		$andFirstPos = strpos(strtoupper($wherePart), 'AND');
+		$orFirstPos = strpos(strtoupper($wherePart), 'OR');
+		if (($andFirstPos > 0 || $andFirstPos === -1) && $orFirstPos !== 0) {
+			$wherePart = 'AND ' . $wherePart . ' ';
+		}
+		$wherePart = ' ' . $wherePart;
+		return mysql_real_escape_string($wherePart);
 	}
 
 	private function getConf(){
@@ -216,6 +276,15 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 		if(strlen(trim($this->additionalWhere)) > 0)
 			$this->additionalWhere = trim($this->additionalWhere);
 
+		if(t3lib_div::_GET('parts') > 1){
+			if(t3lib_div::_GET('partial') > 0){
+				$this->parts = intval(t3lib_div::_GET('parts'));
+				$this->partial = intval(t3lib_div::_GET('partial'));
+			}
+		}
+	}
+
+	private function definePartsAndPartial() {
 		if(t3lib_div::_GET('parts') > 1){
 			if(t3lib_div::_GET('partial') > 0){
 				$this->parts = intval(t3lib_div::_GET('parts'));

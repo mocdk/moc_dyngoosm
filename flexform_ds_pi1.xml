@@ -136,10 +136,41 @@
 							<config>
 								<type>text</type>
 								<rows>6</rows>
-								<cols>30</cols>
+								<cols>48</cols>
 							</config>
 						</TCEforms>
 					</links_to_sitemaps>
+					<sitemaps_table>
+						<TCEforms>
+							<label>LLL:EXT:moc_dyngoosm/pi1/locallang.xml:pi_flexform.sitemaps_table</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+								<eval>trim</eval>
+							</config>
+						</TCEforms>
+					</sitemaps_table>
+					<last_modified_field_all>
+						<TCEforms>
+							<label>LLL:EXT:moc_dyngoosm/pi1/locallang.xml:pi_flexform.last_modified_field_all</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+								<eval>trim</eval>
+								<default>tstamp</default>
+							</config>
+						</TCEforms>
+					</last_modified_field_all>
+					<index_additional_where>
+						<TCEforms>
+							<label>LLL:EXT:moc_dyngoosm/pi1/locallang.xml:pi_flexform.index_additional_where</label>
+							<config>
+								<type>text</type>
+								<rows>6</rows>
+								<cols>48</cols>
+							</config>
+						</TCEforms>
+					</index_additional_where>
 				</el>
 			</ROOT>
 		</sIndex>
