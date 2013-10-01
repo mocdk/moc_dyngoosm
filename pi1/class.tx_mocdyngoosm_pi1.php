@@ -233,7 +233,7 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 			$wherePart = 'AND ' . $wherePart . ' ';
 		}
 		$wherePart = ' ' . $wherePart;
-		return mysql_real_escape_string($wherePart);
+		return $wherePart;
 	}
 
 	private function getConf(){
@@ -273,8 +273,10 @@ class tx_mocdyngoosm_pi1 extends tslib_pibase {
 			$this->where = 'pid = '.$this->storagePid;
 		}
 
-		if(strlen(trim($this->additionalWhere)) > 0)
-			$this->additionalWhere = trim($this->additionalWhere);
+		$this->additionalWhere = $this->prepareAdditionalWhere($this->additionalWhere);
+
+		//if(strlen(trim($this->additionalWhere)) > 0)
+		//	$this->additionalWhere = trim($this->additionalWhere);
 
 		if(t3lib_div::_GET('parts') > 1){
 			if(t3lib_div::_GET('partial') > 0){
